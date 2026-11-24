@@ -1,0 +1,15 @@
+name: livrenet-fem
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy=1.26
+  - scipy
+  - pandas
+  - pyvista
+  - tqdm
+  - fenics-dolfinx=0.10
+  - mpi4py
+  - petsc4py
+  - mumps-mpi
+  - pip

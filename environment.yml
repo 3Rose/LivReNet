@@ -1,0 +1,11 @@
+name: livrenet
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - numpy=1.26.4
+  - scipy=1.15.2
+  - pip:
+      - open3d==0.19.0
+      - torch==2.8.0

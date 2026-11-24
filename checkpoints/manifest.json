@@ -1,0 +1,13 @@
+{
+  "protocol": "038f33c5f772979cdfe1cefbdab0fe0acbf157a4df12bc49b23d0bbb6a5e51b3",
+  "encoder_sha256": "8a98a4eca094de19bad008b673f1c4d1c79bc1478389a486ee83abc1e7b9f0e1",
+  "refiner_sha256": "8e851cb88a3c084483bb92b87d6ac1c6456960363c14baf8e4466fe99cfaf094",
+  "normalization_sha256": "c4e0ddf84225f1af3b0fc987d964d962b464c2beda450f4e966b7b8d281a4b38",
+  "test_used_for_selection": false,
+  "historically_explored": true,
+  "models": [
+    "encoder_solve",
+    "geometric_fit",
+    "livrenet_unbounded"
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "seed": 13,
+  "encoder_epochs": 80,
+  "refiner_epochs": 40,
+  "learning_rate": 0.0003,
+  "minimum_learning_rate": 1e-06,
+  "schedule": "fixed cosine decay per epoch; no early stopping",
+  "encoder_weight_decay": 0.0001,
+  "refiner_weight_decay": 0.001,
+  "encoder_effective_batch": 2,
+  "refiner_microbatch": 4,
+  "refiner_accumulation": 2,
+  "encoder_gradient_clip": 1.0,
+  "refiner_gradient_clip": 5.0,
+  "checkpoint_updates": 64,
+  "loss": {
+    "global_weight": 1.0,
+    "peak_weight": 1.0,
+    "identity_tail_weight": 1.0,
+    "peak_fraction": 0.8,
+    "peak_minimum_mm": 1.0,
+    "identity_tail_fraction": 0.01
+  },
+  "fitting_caps": [
+    2,
+    1,
+    1,
+    3
+  ],
+  "normalization_minimum_scale": 0.02,
+  "test_panels": [
+    "original",
+    "expanded"
+  ],
+  "benchmark_repeats": 5,
+  "benchmark_warmup": 2,
+  "validation_backend": "deterministic CUDA, identical neural forward to inference",
+  "selection": "same objective; camera within dose, dose within FEM, FEM within anatomy; primary validation anatomies",
+  "refiner_output": "unbounded linear correction, applied at every vertex without final gates",
+  "precision": "FP32 networks, FP64 initial solve and existing mixed-precision numerical fitter; TF32 and AMP disabled",
+  "primary_validation_anatomies": [
+    "3Dircadb1.7",
+    "3Dircadb1.19"
+  ],
+  "fitter": {
+    "candidate_faces": 96,
+    "constraint_count": 300,
+    "minimum_separation_mm": 2.0,
+    "correspondence_delta_mm": 2.0,
+    "minimum_trim_mm": 0.5,
+    "irls_iterations": 4,
+    "coefficient_ridge": 0.0001,
+    "fem_ridge": 0.001,
+    "damping": 1.0,
+    "huber_delta_mm": 1.5,
+    "global_prior_ridge": 0.01
+  }
+}

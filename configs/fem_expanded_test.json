@@ -1,0 +1,1405 @@
+{
+  "defaults": {
+    "anchors": {
+      "hard_radius_ratio": 0.02,
+      "load_avoid_radius_ratio": 0.055,
+      "radius_jitter": 0.12,
+      "regimes": [
+        {
+          "hard_radius_scale": 1.0,
+          "min_hard_vertices": 5,
+          "name": "anchored",
+          "release_fraction": 0.0,
+          "soft_radius_scale": 1.0,
+          "stiffness_scale": 1.0,
+          "weight": 0.45
+        },
+        {
+          "hard_radius_scale": 0.75,
+          "min_hard_vertices": 4,
+          "name": "partially_mobilized",
+          "release_fraction": 0.3,
+          "soft_radius_scale": 0.9,
+          "stiffness_scale": 0.55,
+          "weight": 0.35
+        },
+        {
+          "hard_radius_scale": 0.4,
+          "min_hard_vertices": 3,
+          "name": "softly_supported",
+          "release_fraction": 0.55,
+          "soft_radius_scale": 1.25,
+          "stiffness_scale": 0.3,
+          "weight": 0.2
+        }
+      ],
+      "soft_anchor_relative_stiffness_max": 0.03,
+      "soft_anchor_relative_stiffness_min": 0.005,
+      "soft_radius_ratio": 0.075
+    },
+    "executor_retries_per_sample": 4,
+    "material": {
+      "model": "linear_elastic",
+      "poisson_ratio": 0.45,
+      "poisson_ratio_max": 0.47,
+      "poisson_ratio_min": 0.42,
+      "randomize_per_template": false,
+      "young_modulus": 0.003,
+      "young_modulus_log_std": 0.15
+    },
+    "max_tasks_per_worker": 32,
+    "n_workers": 12,
+    "overwrite_existing": false,
+    "sample_id_width": 6,
+    "solver": {
+      "backend": "linear",
+      "mapping_tolerance_ratio": 1e-05,
+      "native_threads_per_worker": 1,
+      "petsc_options": {
+        "ksp_type": "preonly",
+        "pc_factor_mat_solver_type": "cholmod",
+        "pc_type": "cholesky"
+      },
+      "require_serial": true,
+      "store_volume_displacement": true
+    },
+    "splits": {
+      "allow_single_template_sample_split": true,
+      "ood_anchor_stiffness_multiplier": [
+        0.4,
+        1.8
+      ],
+      "ood_fraction_within_test": 0.25,
+      "ood_oblique_angle_deg": [
+        60.0,
+        80.0
+      ],
+      "ood_radius_multiplier": [
+        0.75,
+        1.25
+      ],
+      "require_patient_level_for_multiple_templates": true,
+      "test_fraction": 0.15,
+      "train_fraction": 0.75,
+      "val_fraction": 0.1
+    }
+  },
+  "profiles": {
+    "recipe_01": {
+      "anatomy_calibration": {
+        "amplitude_scale_bounds": [
+          0.85,
+          1.15
+        ],
+        "amplitude_scale_exponent": 1.0,
+        "capacity_adaptation_enabled": true,
+        "capacity_bisection_steps": 8,
+        "capacity_min_bin_fraction": 0.02,
+        "characteristic_length_reference_mm": 117.74999718244769,
+        "enabled": true,
+        "hard_area_fraction_ranges": {
+          "anchored": [
+            0.07,
+            0.11
+          ],
+          "partially_mobilized": [
+            0.04,
+            0.075
+          ],
+          "softly_supported": [
+            0.015,
+            0.035
+          ]
+        },
+        "load_area_fraction_ranges": {
+          "lobe_motion": [
+            0.16,
+            0.32
+          ],
+          "local_broad": [
+            0.06,
+            0.16
+          ],
+          "local_narrow": [
+            0.015,
+            0.05
+          ]
+        },
+        "load_center_quality_quantile": 1.0,
+        "soft_area_fraction_ranges": {
+          "anchored": [
+            0.55,
+            0.72
+          ],
+          "partially_mobilized": [
+            0.45,
+            0.62
+          ],
+          "softly_supported": [
+            0.55,
+            0.72
+          ]
+        }
+      },
+      "deformation": {
+        "family_max_displacement_mm": {
+          "lobe_motion": 35.0,
+          "local_broad": 28.0,
+          "local_narrow": 15.0
+        },
+        "family_max_displacement_ratio": {
+          "lobe_motion": 0.16,
+          "local_broad": 0.13,
+          "local_narrow": 0.1
+        },
+        "family_weights": {
+          "lobe_motion": 0.45,
+          "local_broad": 0.45,
+          "local_narrow": 0.1
+        },
+        "lobe_peripheral_quantile": 0.45,
+        "min_patch_vertices": 10,
+        "oblique_angle_max_deg": 60.0,
+        "oblique_angle_min_deg": 20.0,
+        "profile_choices": [
+          "gaussian",
+          "cosine",
+          "wendland",
+          "flat_smooth"
+        ],
+        "profile_weights": [
+          0.35,
+          0.25,
+          0.4,
+          0.0
+        ],
+        "profile_weights_by_family": {
+          "lobe_motion": {
+            "flat_smooth": 1.0
+          },
+          "local_broad": {
+            "flat_smooth": 1.0
+          },
+          "local_narrow": {
+            "cosine": 0.15,
+            "flat_smooth": 0.6,
+            "gaussian": 0.25
+          }
+        },
+        "push_probability": {
+          "lobe_motion": 0.35,
+          "local_broad": 0.5,
+          "local_narrow": 0.55
+        },
+        "radius_amplitude_coupling": {
+          "lobe_motion": 0.9,
+          "local_broad": 0.85,
+          "local_narrow": 0.55
+        },
+        "radius_ratio_ranges": {
+          "lobe_motion": [
+            0.38,
+            0.65
+          ],
+          "local_broad": [
+            0.2,
+            0.38
+          ],
+          "local_narrow": [
+            0.1,
+            0.16
+          ]
+        },
+        "tangential_normal_component_max": 0.15
+      },
+      "displacement": {
+        "accepted_quota_tolerance_percentage_points": 5.0,
+        "bins": [
+          [
+            "small",
+            3.0,
+            8.0,
+            0.15
+          ],
+          [
+            "moderate",
+            8.0,
+            18.0,
+            0.45
+          ],
+          [
+            "large",
+            18.0,
+            30.0,
+            0.35
+          ],
+          [
+            "severe",
+            30.0,
+            35.0,
+            0.05
+          ]
+        ],
+        "identity_fraction": 0.0,
+        "initial_traction": 0.0001
+      },
+      "quotas": {
+        "anatomy_difficulty_scores": {},
+        "anatomy_weights": {
+          "3Dircadb1.13": 1.0
+        },
+        "difficulty_bias_strength": 2.0,
+        "max_anatomy_difficulty_by_bin": {}
+      },
+      "validity": {
+        "family_spread_bounds": {
+          "lobe_motion": [
+            0.15,
+            0.75,
+            0.05,
+            15.0
+          ],
+          "local_broad": [
+            0.08,
+            0.5,
+            0.02,
+            22.0
+          ],
+          "local_narrow": [
+            0.03,
+            0.32,
+            0.006,
+            50.0
+          ]
+        },
+        "max_anchor_realizations": 3,
+        "max_bc_mean_displacement_mm": 1e-06,
+        "max_edge_jump_to_peak_ratio": 0.2,
+        "max_edge_stretch_ratio": 1.8,
+        "max_generation_attempts": 12,
+        "max_global_volume_ratio": 1.1,
+        "max_green_lagrange_abs_max": 2.5,
+        "max_green_lagrange_abs_p95": 0.4,
+        "max_green_lagrange_abs_p99": 0.75,
+        "max_intent_resamples": 3,
+        "max_inverted_fraction": 0.0,
+        "max_jacobian": 2.5,
+        "max_sample_replacements": 4,
+        "min_edge_stretch_ratio": 0.5,
+        "min_global_volume_ratio": 0.9,
+        "min_jacobian": 0.2,
+        "require_peak_inside_support": true,
+        "require_single_high_displacement_component": true,
+        "strict_surface_integrity": true
+      }
+    },
+    "recipe_02": {
+      "anatomy_calibration": {
+        "amplitude_scale_bounds": [
+          1.0,
+          1.0
+        ],
+        "amplitude_scale_exponent": 0.0,
+        "capacity_adaptation_enabled": true,
+        "capacity_bisection_steps": 8,
+        "capacity_min_bin_fraction": 0.02,
+        "characteristic_length_reference_mm": 117.74999718244769,
+        "enabled": true,
+        "hard_area_fraction_ranges": {
+          "anchored": [
+            0.07,
+            0.11
+          ],
+          "partially_mobilized": [
+            0.04,
+            0.075
+          ],
+          "softly_supported": [
+            0.015,
+            0.035
+          ]
+        },
+        "load_area_fraction_ranges": {
+          "lobe_motion": [
+            0.16,
+            0.32
+          ],
+          "local_broad": [
+            0.06,
+            0.16
+          ],
+          "local_narrow": [
+            0.015,
+            0.05
+          ]
+        },
+        "load_center_quality_quantile": 1.0,
+        "soft_area_fraction_ranges": {
+          "anchored": [
+            0.55,
+            0.72
+          ],
+          "partially_mobilized": [
+            0.45,
+            0.62
+          ],
+          "softly_supported": [
+            0.55,
+            0.72
+          ]
+        }
+      },
+      "deformation": {
+        "family_max_displacement_mm": {
+          "lobe_motion": 35.0,
+          "local_broad": 28.0,
+          "local_narrow": 15.0
+        },
+        "family_max_displacement_ratio": {
+          "lobe_motion": 0.16,
+          "local_broad": 0.13,
+          "local_narrow": 0.1
+        },
+        "family_weights": {
+          "lobe_motion": 0.2,
+          "local_broad": 0.7,
+          "local_narrow": 0.1
+        },
+        "lobe_peripheral_quantile": 0.45,
+        "min_patch_vertices": 10,
+        "oblique_angle_max_deg": 60.0,
+        "oblique_angle_min_deg": 20.0,
+        "profile_choices": [
+          "gaussian",
+          "cosine",
+          "wendland",
+          "flat_smooth"
+        ],
+        "profile_weights": [
+          0.35,
+          0.25,
+          0.4,
+          0.0
+        ],
+        "profile_weights_by_family": {
+          "lobe_motion": {
+            "flat_smooth": 1.0
+          },
+          "local_broad": {
+            "flat_smooth": 1.0
+          },
+          "local_narrow": {
+            "cosine": 0.15,
+            "flat_smooth": 0.6,
+            "gaussian": 0.25
+          }
+        },
+        "push_probability": {
+          "lobe_motion": 0.35,
+          "local_broad": 0.5,
+          "local_narrow": 0.55
+        },
+        "radius_amplitude_coupling": {
+          "lobe_motion": 0.9,
+          "local_broad": 0.85,
+          "local_narrow": 0.55
+        },
+        "radius_ratio_ranges": {
+          "lobe_motion": [
+            0.38,
+            0.65
+          ],
+          "local_broad": [
+            0.2,
+            0.38
+          ],
+          "local_narrow": [
+            0.1,
+            0.16
+          ]
+        },
+        "tangential_normal_component_max": 0.15
+      },
+      "displacement": {
+        "accepted_quota_tolerance_percentage_points": 5.0,
+        "bins": [
+          [
+            "weak",
+            0.1,
+            2.0,
+            1.0
+          ]
+        ],
+        "identity_fraction": 0.0,
+        "initial_traction": 0.0001
+      },
+      "principal_stretch_screen": [
+        0.8,
+        1.2
+      ],
+      "quotas": {
+        "anatomy_difficulty_scores": {},
+        "anatomy_weights": {
+          "3Dircadb1.13": 1.0
+        },
+        "difficulty_bias_strength": 2.0,
+        "max_anatomy_difficulty_by_bin": {}
+      },
+      "validity": {
+        "family_spread_bounds": {
+          "lobe_motion": [
+            0.15,
+            0.75,
+            0.05,
+            15.0
+          ],
+          "local_broad": [
+            0.08,
+            0.5,
+            0.02,
+            22.0
+          ],
+          "local_narrow": [
+            0.03,
+            0.32,
+            0.006,
+            50.0
+          ]
+        },
+        "max_anchor_realizations": 3,
+        "max_bc_mean_displacement_mm": 1e-06,
+        "max_edge_jump_to_peak_ratio": 0.2,
+        "max_edge_stretch_ratio": 1.8,
+        "max_generation_attempts": 12,
+        "max_global_volume_ratio": 1.1,
+        "max_green_lagrange_abs_max": 2.5,
+        "max_green_lagrange_abs_p95": 0.1,
+        "max_green_lagrange_abs_p99": 0.75,
+        "max_intent_resamples": 3,
+        "max_inverted_fraction": 0.0,
+        "max_jacobian": 1.2,
+        "max_sample_replacements": 4,
+        "min_edge_stretch_ratio": 0.5,
+        "min_global_volume_ratio": 0.9,
+        "min_jacobian": 0.8,
+        "require_peak_inside_support": true,
+        "require_single_high_displacement_component": true,
+        "strict_surface_integrity": true
+      }
+    },
+    "recipe_03": {
+      "anatomy_calibration": {
+        "amplitude_scale_bounds": [
+          0.85,
+          1.15
+        ],
+        "amplitude_scale_exponent": 1.0,
+        "capacity_adaptation_enabled": true,
+        "capacity_bisection_steps": 8,
+        "capacity_min_bin_fraction": 0.02,
+        "characteristic_length_reference_mm": 117.74999718244769,
+        "enabled": true,
+        "hard_area_fraction_ranges": {
+          "anchored": [
+            0.07,
+            0.11
+          ],
+          "partially_mobilized": [
+            0.04,
+            0.075
+          ],
+          "softly_supported": [
+            0.015,
+            0.035
+          ]
+        },
+        "load_area_fraction_ranges": {
+          "lobe_motion": [
+            0.16,
+            0.32
+          ],
+          "local_broad": [
+            0.06,
+            0.16
+          ],
+          "local_narrow": [
+            0.015,
+            0.05
+          ]
+        },
+        "load_center_quality_quantile": 1.0,
+        "soft_area_fraction_ranges": {
+          "anchored": [
+            0.55,
+            0.72
+          ],
+          "partially_mobilized": [
+            0.45,
+            0.62
+          ],
+          "softly_supported": [
+            0.55,
+            0.72
+          ]
+        }
+      },
+      "deformation": {
+        "family_max_displacement_mm": {
+          "lobe_motion": 35.0,
+          "local_broad": 28.0,
+          "local_narrow": 15.0
+        },
+        "family_max_displacement_ratio": {
+          "lobe_motion": 0.16,
+          "local_broad": 0.13,
+          "local_narrow": 0.1
+        },
+        "family_weights": {
+          "lobe_motion": 0.45,
+          "local_broad": 0.45,
+          "local_narrow": 0.1
+        },
+        "lobe_peripheral_quantile": 0.45,
+        "min_patch_vertices": 10,
+        "oblique_angle_max_deg": 60.0,
+        "oblique_angle_min_deg": 20.0,
+        "profile_choices": [
+          "gaussian",
+          "cosine",
+          "wendland",
+          "flat_smooth"
+        ],
+        "profile_weights": [
+          0.35,
+          0.25,
+          0.4,
+          0.0
+        ],
+        "profile_weights_by_family": {
+          "lobe_motion": {
+            "flat_smooth": 1.0
+          },
+          "local_broad": {
+            "flat_smooth": 1.0
+          },
+          "local_narrow": {
+            "cosine": 0.15,
+            "flat_smooth": 0.6,
+            "gaussian": 0.25
+          }
+        },
+        "push_probability": {
+          "lobe_motion": 0.35,
+          "local_broad": 0.5,
+          "local_narrow": 0.55
+        },
+        "radius_amplitude_coupling": {
+          "lobe_motion": 0.9,
+          "local_broad": 0.85,
+          "local_narrow": 0.55
+        },
+        "radius_ratio_ranges": {
+          "lobe_motion": [
+            0.38,
+            0.65
+          ],
+          "local_broad": [
+            0.2,
+            0.38
+          ],
+          "local_narrow": [
+            0.1,
+            0.16
+          ]
+        },
+        "tangential_normal_component_max": 0.15
+      },
+      "displacement": {
+        "accepted_quota_tolerance_percentage_points": 5.0,
+        "bins": [
+          [
+            "small",
+            3.0,
+            8.0,
+            0.15
+          ],
+          [
+            "moderate",
+            8.0,
+            18.0,
+            0.45
+          ],
+          [
+            "large",
+            18.0,
+            30.0,
+            0.35
+          ],
+          [
+            "severe",
+            30.0,
+            35.0,
+            0.05
+          ]
+        ],
+        "identity_fraction": 0.0,
+        "initial_traction": 0.0001
+      },
+      "quotas": {
+        "anatomy_difficulty_scores": {},
+        "anatomy_weights": {
+          "3Dircadb1.15": 1.0
+        },
+        "difficulty_bias_strength": 2.0,
+        "max_anatomy_difficulty_by_bin": {}
+      },
+      "validity": {
+        "family_spread_bounds": {
+          "lobe_motion": [
+            0.15,
+            0.75,
+            0.05,
+            15.0
+          ],
+          "local_broad": [
+            0.08,
+            0.5,
+            0.02,
+            22.0
+          ],
+          "local_narrow": [
+            0.03,
+            0.32,
+            0.006,
+            50.0
+          ]
+        },
+        "max_anchor_realizations": 3,
+        "max_bc_mean_displacement_mm": 1e-06,
+        "max_edge_jump_to_peak_ratio": 0.2,
+        "max_edge_stretch_ratio": 1.8,
+        "max_generation_attempts": 12,
+        "max_global_volume_ratio": 1.1,
+        "max_green_lagrange_abs_max": 2.5,
+        "max_green_lagrange_abs_p95": 0.4,
+        "max_green_lagrange_abs_p99": 0.75,
+        "max_intent_resamples": 3,
+        "max_inverted_fraction": 0.0,
+        "max_jacobian": 2.5,
+        "max_sample_replacements": 4,
+        "min_edge_stretch_ratio": 0.5,
+        "min_global_volume_ratio": 0.9,
+        "min_jacobian": 0.2,
+        "require_peak_inside_support": true,
+        "require_single_high_displacement_component": true,
+        "strict_surface_integrity": true
+      }
+    },
+    "recipe_04": {
+      "anatomy_calibration": {
+        "amplitude_scale_bounds": [
+          1.0,
+          1.0
+        ],
+        "amplitude_scale_exponent": 0.0,
+        "capacity_adaptation_enabled": true,
+        "capacity_bisection_steps": 8,
+        "capacity_min_bin_fraction": 0.02,
+        "characteristic_length_reference_mm": 117.74999718244769,
+        "enabled": true,
+        "hard_area_fraction_ranges": {
+          "anchored": [
+            0.07,
+            0.11
+          ],
+          "partially_mobilized": [
+            0.04,
+            0.075
+          ],
+          "softly_supported": [
+            0.015,
+            0.035
+          ]
+        },
+        "load_area_fraction_ranges": {
+          "lobe_motion": [
+            0.16,
+            0.32
+          ],
+          "local_broad": [
+            0.06,
+            0.16
+          ],
+          "local_narrow": [
+            0.015,
+            0.05
+          ]
+        },
+        "load_center_quality_quantile": 1.0,
+        "soft_area_fraction_ranges": {
+          "anchored": [
+            0.55,
+            0.72
+          ],
+          "partially_mobilized": [
+            0.45,
+            0.62
+          ],
+          "softly_supported": [
+            0.55,
+            0.72
+          ]
+        }
+      },
+      "deformation": {
+        "family_max_displacement_mm": {
+          "lobe_motion": 35.0,
+          "local_broad": 28.0,
+          "local_narrow": 15.0
+        },
+        "family_max_displacement_ratio": {
+          "lobe_motion": 0.16,
+          "local_broad": 0.13,
+          "local_narrow": 0.1
+        },
+        "family_weights": {
+          "lobe_motion": 0.2,
+          "local_broad": 0.7,
+          "local_narrow": 0.1
+        },
+        "lobe_peripheral_quantile": 0.45,
+        "min_patch_vertices": 10,
+        "oblique_angle_max_deg": 60.0,
+        "oblique_angle_min_deg": 20.0,
+        "profile_choices": [
+          "gaussian",
+          "cosine",
+          "wendland",
+          "flat_smooth"
+        ],
+        "profile_weights": [
+          0.35,
+          0.25,
+          0.4,
+          0.0
+        ],
+        "profile_weights_by_family": {
+          "lobe_motion": {
+            "flat_smooth": 1.0
+          },
+          "local_broad": {
+            "flat_smooth": 1.0
+          },
+          "local_narrow": {
+            "cosine": 0.15,
+            "flat_smooth": 0.6,
+            "gaussian": 0.25
+          }
+        },
+        "push_probability": {
+          "lobe_motion": 0.35,
+          "local_broad": 0.5,
+          "local_narrow": 0.55
+        },
+        "radius_amplitude_coupling": {
+          "lobe_motion": 0.9,
+          "local_broad": 0.85,
+          "local_narrow": 0.55
+        },
+        "radius_ratio_ranges": {
+          "lobe_motion": [
+            0.38,
+            0.65
+          ],
+          "local_broad": [
+            0.2,
+            0.38
+          ],
+          "local_narrow": [
+            0.1,
+            0.16
+          ]
+        },
+        "tangential_normal_component_max": 0.15
+      },
+      "displacement": {
+        "accepted_quota_tolerance_percentage_points": 5.0,
+        "bins": [
+          [
+            "weak",
+            0.1,
+            2.0,
+            1.0
+          ]
+        ],
+        "identity_fraction": 0.0,
+        "initial_traction": 0.0001
+      },
+      "principal_stretch_screen": [
+        0.8,
+        1.2
+      ],
+      "quotas": {
+        "anatomy_difficulty_scores": {},
+        "anatomy_weights": {
+          "3Dircadb1.15": 1.0
+        },
+        "difficulty_bias_strength": 2.0,
+        "max_anatomy_difficulty_by_bin": {}
+      },
+      "validity": {
+        "family_spread_bounds": {
+          "lobe_motion": [
+            0.15,
+            0.75,
+            0.05,
+            15.0
+          ],
+          "local_broad": [
+            0.08,
+            0.5,
+            0.02,
+            22.0
+          ],
+          "local_narrow": [
+            0.03,
+            0.32,
+            0.006,
+            50.0
+          ]
+        },
+        "max_anchor_realizations": 3,
+        "max_bc_mean_displacement_mm": 1e-06,
+        "max_edge_jump_to_peak_ratio": 0.2,
+        "max_edge_stretch_ratio": 1.8,
+        "max_generation_attempts": 12,
+        "max_global_volume_ratio": 1.1,
+        "max_green_lagrange_abs_max": 2.5,
+        "max_green_lagrange_abs_p95": 0.1,
+        "max_green_lagrange_abs_p99": 0.75,
+        "max_intent_resamples": 3,
+        "max_inverted_fraction": 0.0,
+        "max_jacobian": 1.2,
+        "max_sample_replacements": 4,
+        "min_edge_stretch_ratio": 0.5,
+        "min_global_volume_ratio": 0.9,
+        "min_jacobian": 0.8,
+        "require_peak_inside_support": true,
+        "require_single_high_displacement_component": true,
+        "strict_surface_integrity": true
+      }
+    },
+    "recipe_05": {
+      "anatomy_calibration": {
+        "amplitude_scale_bounds": [
+          0.85,
+          1.15
+        ],
+        "amplitude_scale_exponent": 1.0,
+        "capacity_adaptation_enabled": true,
+        "capacity_bisection_steps": 8,
+        "capacity_min_bin_fraction": 0.02,
+        "characteristic_length_reference_mm": 117.74999718244769,
+        "enabled": true,
+        "hard_area_fraction_ranges": {
+          "anchored": [
+            0.07,
+            0.11
+          ],
+          "partially_mobilized": [
+            0.04,
+            0.075
+          ],
+          "softly_supported": [
+            0.015,
+            0.035
+          ]
+        },
+        "load_area_fraction_ranges": {
+          "lobe_motion": [
+            0.16,
+            0.32
+          ],
+          "local_broad": [
+            0.06,
+            0.16
+          ],
+          "local_narrow": [
+            0.015,
+            0.05
+          ]
+        },
+        "load_center_quality_quantile": 1.0,
+        "soft_area_fraction_ranges": {
+          "anchored": [
+            0.55,
+            0.72
+          ],
+          "partially_mobilized": [
+            0.45,
+            0.62
+          ],
+          "softly_supported": [
+            0.55,
+            0.72
+          ]
+        }
+      },
+      "deformation": {
+        "family_max_displacement_mm": {
+          "lobe_motion": 35.0,
+          "local_broad": 28.0,
+          "local_narrow": 15.0
+        },
+        "family_max_displacement_ratio": {
+          "lobe_motion": 0.16,
+          "local_broad": 0.13,
+          "local_narrow": 0.1
+        },
+        "family_weights": {
+          "lobe_motion": 0.45,
+          "local_broad": 0.45,
+          "local_narrow": 0.1
+        },
+        "lobe_peripheral_quantile": 0.45,
+        "min_patch_vertices": 10,
+        "oblique_angle_max_deg": 60.0,
+        "oblique_angle_min_deg": 20.0,
+        "profile_choices": [
+          "gaussian",
+          "cosine",
+          "wendland",
+          "flat_smooth"
+        ],
+        "profile_weights": [
+          0.35,
+          0.25,
+          0.4,
+          0.0
+        ],
+        "profile_weights_by_family": {
+          "lobe_motion": {
+            "flat_smooth": 1.0
+          },
+          "local_broad": {
+            "flat_smooth": 1.0
+          },
+          "local_narrow": {
+            "cosine": 0.15,
+            "flat_smooth": 0.6,
+            "gaussian": 0.25
+          }
+        },
+        "push_probability": {
+          "lobe_motion": 0.35,
+          "local_broad": 0.5,
+          "local_narrow": 0.55
+        },
+        "radius_amplitude_coupling": {
+          "lobe_motion": 0.9,
+          "local_broad": 0.85,
+          "local_narrow": 0.55
+        },
+        "radius_ratio_ranges": {
+          "lobe_motion": [
+            0.38,
+            0.65
+          ],
+          "local_broad": [
+            0.2,
+            0.38
+          ],
+          "local_narrow": [
+            0.1,
+            0.16
+          ]
+        },
+        "tangential_normal_component_max": 0.15
+      },
+      "displacement": {
+        "accepted_quota_tolerance_percentage_points": 5.0,
+        "bins": [
+          [
+            "small",
+            3.0,
+            8.0,
+            0.15
+          ],
+          [
+            "moderate",
+            8.0,
+            18.0,
+            0.45
+          ],
+          [
+            "large",
+            18.0,
+            30.0,
+            0.35
+          ],
+          [
+            "severe",
+            30.0,
+            35.0,
+            0.05
+          ]
+        ],
+        "identity_fraction": 0.0,
+        "initial_traction": 0.0001
+      },
+      "quotas": {
+        "anatomy_difficulty_scores": {},
+        "anatomy_weights": {
+          "3Dircadb1.16": 1.0
+        },
+        "difficulty_bias_strength": 2.0,
+        "max_anatomy_difficulty_by_bin": {}
+      },
+      "validity": {
+        "family_spread_bounds": {
+          "lobe_motion": [
+            0.15,
+            0.75,
+            0.05,
+            15.0
+          ],
+          "local_broad": [
+            0.08,
+            0.5,
+            0.02,
+            22.0
+          ],
+          "local_narrow": [
+            0.03,
+            0.32,
+            0.006,
+            50.0
+          ]
+        },
+        "max_anchor_realizations": 3,
+        "max_bc_mean_displacement_mm": 1e-06,
+        "max_edge_jump_to_peak_ratio": 0.2,
+        "max_edge_stretch_ratio": 1.8,
+        "max_generation_attempts": 12,
+        "max_global_volume_ratio": 1.1,
+        "max_green_lagrange_abs_max": 2.5,
+        "max_green_lagrange_abs_p95": 0.4,
+        "max_green_lagrange_abs_p99": 0.75,
+        "max_intent_resamples": 3,
+        "max_inverted_fraction": 0.0,
+        "max_jacobian": 2.5,
+        "max_sample_replacements": 4,
+        "min_edge_stretch_ratio": 0.5,
+        "min_global_volume_ratio": 0.9,
+        "min_jacobian": 0.2,
+        "require_peak_inside_support": true,
+        "require_single_high_displacement_component": true,
+        "strict_surface_integrity": true
+      }
+    },
+    "recipe_06": {
+      "anatomy_calibration": {
+        "amplitude_scale_bounds": [
+          1.0,
+          1.0
+        ],
+        "amplitude_scale_exponent": 0.0,
+        "capacity_adaptation_enabled": true,
+        "capacity_bisection_steps": 8,
+        "capacity_min_bin_fraction": 0.02,
+        "characteristic_length_reference_mm": 117.74999718244769,
+        "enabled": true,
+        "hard_area_fraction_ranges": {
+          "anchored": [
+            0.07,
+            0.11
+          ],
+          "partially_mobilized": [
+            0.04,
+            0.075
+          ],
+          "softly_supported": [
+            0.015,
+            0.035
+          ]
+        },
+        "load_area_fraction_ranges": {
+          "lobe_motion": [
+            0.16,
+            0.32
+          ],
+          "local_broad": [
+            0.06,
+            0.16
+          ],
+          "local_narrow": [
+            0.015,
+            0.05
+          ]
+        },
+        "load_center_quality_quantile": 1.0,
+        "soft_area_fraction_ranges": {
+          "anchored": [
+            0.55,
+            0.72
+          ],
+          "partially_mobilized": [
+            0.45,
+            0.62
+          ],
+          "softly_supported": [
+            0.55,
+            0.72
+          ]
+        }
+      },
+      "deformation": {
+        "family_max_displacement_mm": {
+          "lobe_motion": 35.0,
+          "local_broad": 28.0,
+          "local_narrow": 15.0
+        },
+        "family_max_displacement_ratio": {
+          "lobe_motion": 0.16,
+          "local_broad": 0.13,
+          "local_narrow": 0.1
+        },
+        "family_weights": {
+          "lobe_motion": 0.2,
+          "local_broad": 0.7,
+          "local_narrow": 0.1
+        },
+        "lobe_peripheral_quantile": 0.45,
+        "min_patch_vertices": 10,
+        "oblique_angle_max_deg": 60.0,
+        "oblique_angle_min_deg": 20.0,
+        "profile_choices": [
+          "gaussian",
+          "cosine",
+          "wendland",
+          "flat_smooth"
+        ],
+        "profile_weights": [
+          0.35,
+          0.25,
+          0.4,
+          0.0
+        ],
+        "profile_weights_by_family": {
+          "lobe_motion": {
+            "flat_smooth": 1.0
+          },
+          "local_broad": {
+            "flat_smooth": 1.0
+          },
+          "local_narrow": {
+            "cosine": 0.15,
+            "flat_smooth": 0.6,
+            "gaussian": 0.25
+          }
+        },
+        "push_probability": {
+          "lobe_motion": 0.35,
+          "local_broad": 0.5,
+          "local_narrow": 0.55
+        },
+        "radius_amplitude_coupling": {
+          "lobe_motion": 0.9,
+          "local_broad": 0.85,
+          "local_narrow": 0.55
+        },
+        "radius_ratio_ranges": {
+          "lobe_motion": [
+            0.38,
+            0.65
+          ],
+          "local_broad": [
+            0.2,
+            0.38
+          ],
+          "local_narrow": [
+            0.1,
+            0.16
+          ]
+        },
+        "tangential_normal_component_max": 0.15
+      },
+      "displacement": {
+        "accepted_quota_tolerance_percentage_points": 5.0,
+        "bins": [
+          [
+            "weak",
+            0.1,
+            2.0,
+            1.0
+          ]
+        ],
+        "identity_fraction": 0.0,
+        "initial_traction": 0.0001
+      },
+      "principal_stretch_screen": [
+        0.8,
+        1.2
+      ],
+      "quotas": {
+        "anatomy_difficulty_scores": {},
+        "anatomy_weights": {
+          "3Dircadb1.16": 1.0
+        },
+        "difficulty_bias_strength": 2.0,
+        "max_anatomy_difficulty_by_bin": {}
+      },
+      "validity": {
+        "family_spread_bounds": {
+          "lobe_motion": [
+            0.15,
+            0.75,
+            0.05,
+            15.0
+          ],
+          "local_broad": [
+            0.08,
+            0.5,
+            0.02,
+            22.0
+          ],
+          "local_narrow": [
+            0.03,
+            0.32,
+            0.006,
+            50.0
+          ]
+        },
+        "max_anchor_realizations": 3,
+        "max_bc_mean_displacement_mm": 1e-06,
+        "max_edge_jump_to_peak_ratio": 0.2,
+        "max_edge_stretch_ratio": 1.8,
+        "max_generation_attempts": 12,
+        "max_global_volume_ratio": 1.1,
+        "max_green_lagrange_abs_max": 2.5,
+        "max_green_lagrange_abs_p95": 0.1,
+        "max_green_lagrange_abs_p99": 0.75,
+        "max_intent_resamples": 3,
+        "max_inverted_fraction": 0.0,
+        "max_jacobian": 1.2,
+        "max_sample_replacements": 4,
+        "min_edge_stretch_ratio": 0.5,
+        "min_global_volume_ratio": 0.9,
+        "min_jacobian": 0.8,
+        "require_peak_inside_support": true,
+        "require_single_high_displacement_component": true,
+        "strict_surface_integrity": true
+      }
+    }
+  },
+  "jobs": {
+    "3Dircadb1.13__strong": {
+      "profile": "recipe_01",
+      "n_samples": 240,
+      "random_seed": 3949131196343619410,
+      "sample_prefix": "statistical_confirmation_v1_strong_2026102101",
+      "templates": [
+        {
+          "anatomical_paths": {
+            "portalvein": "portalvein_surface_clean.vtp",
+            "venacava": "venacava_surface_clean.vtp"
+          },
+          "split": "train",
+          "surface_path": "liver_surface_from_volume.vtp",
+          "template_id": "3Dircadb1.13",
+          "volume_xdmf_path": "liver_volume.xdmf"
+        }
+      ]
+    },
+    "3Dircadb1.13__weak": {
+      "profile": "recipe_02",
+      "n_samples": 30,
+      "random_seed": 2512258145150962217,
+      "sample_prefix": "statistical_confirmation_v1_weak_2026102101",
+      "templates": [
+        {
+          "anatomical_paths": {
+            "portalvein": "portalvein_surface_clean.vtp",
+            "venacava": "venacava_surface_clean.vtp"
+          },
+          "split": "train",
+          "surface_path": "liver_surface_from_volume.vtp",
+          "template_id": "3Dircadb1.13",
+          "volume_xdmf_path": "liver_volume.xdmf"
+        }
+      ]
+    },
+    "3Dircadb1.15__strong": {
+      "profile": "recipe_03",
+      "n_samples": 240,
+      "random_seed": 5764421220273826237,
+      "sample_prefix": "statistical_confirmation_v1_strong_2026102101",
+      "templates": [
+        {
+          "anatomical_paths": {
+            "portalvein": "portalvein_surface_clean.vtp",
+            "venacava": "venacava_surface_clean.vtp"
+          },
+          "split": "train",
+          "surface_path": "liver_surface_from_volume.vtp",
+          "template_id": "3Dircadb1.15",
+          "volume_xdmf_path": "liver_volume.xdmf"
+        }
+      ]
+    },
+    "3Dircadb1.15__weak": {
+      "profile": "recipe_04",
+      "n_samples": 30,
+      "random_seed": 207523636895906717,
+      "sample_prefix": "statistical_confirmation_v1_weak_2026102101",
+      "templates": [
+        {
+          "anatomical_paths": {
+            "portalvein": "portalvein_surface_clean.vtp",
+            "venacava": "venacava_surface_clean.vtp"
+          },
+          "split": "train",
+          "surface_path": "liver_surface_from_volume.vtp",
+          "template_id": "3Dircadb1.15",
+          "volume_xdmf_path": "liver_volume.xdmf"
+        }
+      ]
+    },
+    "3Dircadb1.16__strong": {
+      "profile": "recipe_05",
+      "n_samples": 240,
+      "random_seed": 4169315702013867043,
+      "sample_prefix": "statistical_confirmation_v1_strong_2026102101",
+      "templates": [
+        {
+          "anatomical_paths": {
+            "portalvein": "portalvein_surface_clean.vtp",
+            "venacava": "venacava_surface_clean.vtp"
+          },
+          "split": "train",
+          "surface_path": "liver_surface_from_volume.vtp",
+          "template_id": "3Dircadb1.16",
+          "volume_xdmf_path": "liver_volume.xdmf"
+        }
+      ]
+    },
+    "3Dircadb1.16__weak": {
+      "profile": "recipe_06",
+      "n_samples": 30,
+      "random_seed": 6321764290809302614,
+      "sample_prefix": "statistical_confirmation_v1_weak_2026102101",
+      "templates": [
+        {
+          "anatomical_paths": {
+            "portalvein": "portalvein_surface_clean.vtp",
+            "venacava": "venacava_surface_clean.vtp"
+          },
+          "split": "train",
+          "surface_path": "liver_surface_from_volume.vtp",
+          "template_id": "3Dircadb1.16",
+          "volume_xdmf_path": "liver_volume.xdmf"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "livrenet"
+version = "1.0.0"
+description = "Graph-guided biomechanical reconstruction of liver surface deformation"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+authors = [{ name = "Lorenzo Rosati" }]
+dependencies = [
+    "numpy>=1.26,<2",
+    "open3d==0.19.0",
+    "scipy>=1.13,<1.17",
+    "torch>=2.8,<2.9",
+]
+
+[project.optional-dependencies]
+mesh = ["tetgen>=0.8,<0.9"]
+thesis-data = ["pyvista>=0.45,<0.48", "pandas>=2,<3", "tqdm>=4.66,<5"]
+cuda = ["triton==3.4.0; platform_system == 'Linux'"]
+
+[project.scripts]
+livrenet = "livrenet.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+livrenet = ["thesis.json"]
+"livrenet.data.acquisition" = ["*.json", "*.c"]

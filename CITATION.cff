@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using this metadata."
+title: "LivReNet: Graph-Guided Biomechanical Reconstruction of Liver Surface Deformation"
+type: software
+authors:
+  - family-names: Rosati
+    given-names: Lorenzo
+version: 1.0.0
+repository-code: "https://github.com/3Rose/livrenet"
